@@ -4,6 +4,37 @@
   
   
   <entry>
+    <title>CS231n Introduction to Convolutional neural network 03</title>
+    <link href="/CsBlog/2020/11/10/CS231n-03-Introduction-to-Convolutional-neural-network/"/>
+    <url>/CsBlog/2020/11/10/CS231n-03-Introduction-to-Convolutional-neural-network/</url>
+    
+    <content type="html"><![CDATA[<h3 id="Computational-graphs"><a href="#Computational-graphs" class="headerlink" title="Computational graphs"></a>Computational graphs</h3><p><img src="https://s1.ax1x.com/2020/11/10/BbDAaD.png"></p><h3 id="BackPropagation-A-method-to-compute-the-gradients-of-abitrarily-complex-function"><a href="#BackPropagation-A-method-to-compute-the-gradients-of-abitrarily-complex-function" class="headerlink" title="BackPropagation - A method to compute the gradients of abitrarily complex function"></a>BackPropagation - A method to compute the gradients of abitrarily complex function</h3><ul><li>A recursive application of Chain rule</li></ul><p><img src="https://s1.ax1x.com/2020/11/10/BbDCKx.png"></p><blockquote><p>We get the gradient backprop from the front and comupte with the local gradient to prop to the back.</p></blockquote><p><img src="https://s1.ax1x.com/2020/11/10/BbDPr6.png"></p><blockquote><p>In some cases, some part of the graph can be represented by some func that we already know to simplify the computations. (trade off the math)</p></blockquote><p><img src="https://s1.ax1x.com/2020/11/10/BbDiqK.png"></p><ul><li>Patterns in backward flow</li></ul><ol><li><strong>add gate:</strong> gradient distributor (local = 1)</li><li><strong>max gate:</strong> gradient distributor (local = 1 &amp; 0)</li><li><strong>mul gate:</strong> gradient switcher (local = y &amp; x )</li></ol><p><em>Gradients add at branches n-&gt;1</em></p><ul><li>Then We Got the gradients in the form of Jacobian Matrix</li></ul><p><img src="https://s1.ax1x.com/2020/11/10/BbDkVO.png"></p><p><img src="https://s1.ax1x.com/2020/11/10/BbDZPH.png"></p><p><em>This place include some linear algebra</em></p><h3 id="Modularized-implementation-Forward-Backward-API"><a href="#Modularized-implementation-Forward-Backward-API" class="headerlink" title="Modularized implementation: Forward / Backward API"></a>Modularized implementation: Forward / Backward API</h3><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ComputationalGraph</span>(<span class="hljs-params"><span class="hljs-built_in">object</span></span>):</span>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">forward</span>(<span class="hljs-params">inputs</span>):</span>        <span class="hljs-comment"># 1. pass inputs to input gates</span>        <span class="hljs-comment"># 2. forward the computational graph</span>        <span class="hljs-keyword">for</span> gate <span class="hljs-keyword">in</span> self.graph.nodes_topologically_sorted():            gate.forward()        <span class="hljs-keyword">return</span> loss    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">backward</span>():</span>        <span class="hljs-keyword">for</span> gate <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>(self.graph.nodes_topologically_sorted())            gate.backward() <span class="hljs-comment"># compute the gradients</span>        <span class="hljs-keyword">return</span> inputs_gradients</code></pre><h4 id="EXAMPLE-MulGate"><a href="#EXAMPLE-MulGate" class="headerlink" title="EXAMPLE: MulGate"></a>EXAMPLE: MulGate</h4><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MultiplyGate</span>(<span class="hljs-params"><span class="hljs-built_in">object</span></span>):</span>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">forward</span>(<span class="hljs-params">x, y</span>):</span>        z = x*y        self.x = x        self.y = y    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">backward</span>(<span class="hljs-params">dz</span>):</span>        dx = self.y * z        dy = self.x * z        <span class="hljs-keyword">return</span> [dx, dy]</code></pre><blockquote><p>This practice is common.</p></blockquote><p><img src="https://s1.ax1x.com/2020/11/10/BbDeGd.png"></p><h3 id="Summary-so-Far"><a href="#Summary-so-Far" class="headerlink" title="Summary so Far"></a>Summary so Far</h3><p><img src="https://s1.ax1x.com/2020/11/10/BbDmRA.png"></p><h3 id="Neural-networks"><a href="#Neural-networks" class="headerlink" title="Neural networks"></a>Neural networks</h3><p>(Before) Linear score function: $f = Wx$<br>(Now) 2-layers Neural Network $f = W_2max(0, W_1x)$<br>….or more layers</p><p><img src="https://s1.ax1x.com/2020/11/10/BbDEIe.png"></p><blockquote><p>The h is the scores W1 output, and we put one more linear layer W2 on the top of it to weighting the scores given by h </p></blockquote>]]></content>
+    
+    
+    <categories>
+      
+      <category>CS231n</category>
+      
+      <category>CV</category>
+      
+      <category>Neural Network</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>CS231n</tag>
+      
+      <tag>Stanford</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>CS231n Loss Functions and Optimization 02</title>
     <link href="/CsBlog/2020/11/08/CS231n_02_Loss-Functions-and-Optimization/"/>
     <url>/CsBlog/2020/11/08/CS231n_02_Loss-Functions-and-Optimization/</url>
@@ -12,6 +43,8 @@
     
     
     <categories>
+      
+      <category>CS231n</category>
       
       <category>CV</category>
       
@@ -41,6 +74,8 @@
     
     
     <categories>
+      
+      <category>CS231n</category>
       
       <category>CV</category>
       
