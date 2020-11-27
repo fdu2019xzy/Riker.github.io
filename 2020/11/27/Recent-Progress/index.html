@@ -227,10 +227,10 @@
             <h1 style="display: none">近期进展 (2020-11-15 ~ 2020-11-27)</h1>
             
             <div class="markdown-body">
-              <h2 id="最近进展"><a href="#最近进展" class="headerlink" title="最近进展"></a>最近进展</h2><p>近来比较忙，一直没时间写博客，就暂将这段时间的进展写作一个综述发在博客上</p>
+              <h1 id="最近进展"><a href="#最近进展" class="headerlink" title="最近进展"></a>最近进展</h1><p>近来比较忙，一直没时间写博客，就暂将这段时间的进展写作一个综述发在博客上</p>
 <hr>
-<h3 id="学业方面"><a href="#学业方面" class="headerlink" title="学业方面"></a><strong>学业方面</strong></h3><h4 id="数据结构-DataStructure"><a href="#数据结构-DataStructure" class="headerlink" title="数据结构 - DataStructure"></a>数据结构 - DataStructure</h4><p>数据结构这几周以来都是学的树相关的操作, 对树的相关操作进行了学习和进一步的探究</p>
-<h5 id="已经掌握"><a href="#已经掌握" class="headerlink" title="已经掌握"></a>已经掌握</h5><h6 id="树的储存"><a href="#树的储存" class="headerlink" title="树的储存"></a>树的储存</h6><ol>
+<h2 id="学业方面"><a href="#学业方面" class="headerlink" title="学业方面"></a><strong>学业方面</strong></h2><h3 id="数据结构-DataStructure"><a href="#数据结构-DataStructure" class="headerlink" title="数据结构 - DataStructure"></a>数据结构 - DataStructure</h3><p>数据结构这几周以来都是学的树相关的操作, 对树的相关操作进行了学习和进一步的探究</p>
+<h4 id="已经掌握"><a href="#已经掌握" class="headerlink" title="已经掌握"></a>已经掌握</h4><h5 id="树的储存"><a href="#树的储存" class="headerlink" title="树的储存"></a>树的储存</h5><ol>
 <li><p>邻接表形式</p>
 <pre><code class="hljs cpp"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; Tree[Max]</code></pre>
 </li>
@@ -261,7 +261,7 @@ edge e[Max];
 </li>
 </ol>
 <hr>
-<h6 id="深度优先搜索-dfs"><a href="#深度优先搜索-dfs" class="headerlink" title="深度优先搜索 (dfs)"></a>深度优先搜索 (dfs)</h6><p>基本原则是一种与广度优先搜索对立的，能搜到子节点就往子节点走的搜索方式，既“深度”优先，我们熟知的二叉树的前序和后序遍历都是深度优先搜索的一种。</p>
+<h5 id="深度优先搜索-dfs"><a href="#深度优先搜索-dfs" class="headerlink" title="深度优先搜索 (dfs)"></a>深度优先搜索 (dfs)</h5><p>基本原则是一种与广度优先搜索对立的，能搜到子节点就往子节点走的搜索方式，既“深度”优先，我们熟知的二叉树的前序和后序遍历都是深度优先搜索的一种。</p>
 <ol>
 <li><p>代码实现 (邻接表形式)</p>
  <pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u, <span class="hljs-keyword">int</span> fa)</span></span>
@@ -300,7 +300,7 @@ edge e[Max];
 <p> 通过两次 dfs 我们可以求树的直径，一次 dfs 到直径的端点，再一次求出直径长度。</p>
 <p>dfs 所使用的数据结构是栈，这种数据结构隐含在函数的递归调用中，而对于 bfs 所使用的数据结构是队列，我们就需要</p>
 <hr>
-<h6 id="广-宽-度优先搜索-bfs"><a href="#广-宽-度优先搜索-bfs" class="headerlink" title="广(宽)度优先搜索 (bfs)"></a>广(宽)度优先搜索 (bfs)</h6><p>bfs 不同于 dfs 是深度优先的搜索，bfs是将同层的节点全部搜索过后再进入到下一次，既注重 “广度” 的搜索模式</p>
+<h5 id="广-宽-度优先搜索-bfs"><a href="#广-宽-度优先搜索-bfs" class="headerlink" title="广(宽)度优先搜索 (bfs)"></a>广(宽)度优先搜索 (bfs)</h5><p>bfs 不同于 dfs 是深度优先的搜索，bfs是将同层的节点全部搜索过后再进入到下一次，既注重 “广度” 的搜索模式</p>
 <ol>
 <li><p>代码实现 (邻接表形式)</p>
 <pre><code class="hljs cpp">bfs(s) 
@@ -340,7 +340,7 @@ edge e[Max];
 &#125;</code></pre>
 
 <hr>
-<h6 id="树形dp"><a href="#树形dp" class="headerlink" title="树形dp"></a>树形dp</h6><p>树形dp，顾名思义是在树上进行的dp，在dfs或bfs的过程中进行动态更新。例如通过树形dp求树的直径</p>
+<h5 id="树形dp"><a href="#树形dp" class="headerlink" title="树形dp"></a>树形dp</h5><p>树形dp，顾名思义是在树上进行的dp，在dfs或bfs的过程中进行动态更新。例如通过树形dp求树的直径</p>
 <pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u, <span class="hljs-keyword">int</span> fa)</span></span>
 <span class="hljs-function"></span>&#123;
     vis[x] = <span class="hljs-number">1</span>;
@@ -364,16 +364,16 @@ edge e[Max];
 &#125;</code></pre>
 
 <hr>
-<h5 id="尚未熟练-TODO"><a href="#尚未熟练-TODO" class="headerlink" title="尚未熟练 - TODO"></a><strong>尚未熟练 - TODO</strong></h5><ol>
+<h4 id="尚未熟练-TODO"><a href="#尚未熟练-TODO" class="headerlink" title="尚未熟练 - TODO"></a><strong>尚未熟练 - TODO</strong></h4><ol>
 <li>LCA问题</li>
 <li>树状数组</li>
 <li>线段树</li>
 <li>树链剖分</li>
 </ol>
 <hr>
-<h4 id="计算机系统-ICS"><a href="#计算机系统-ICS" class="headerlink" title="计算机系统 - ICS"></a>计算机系统 - ICS</h4><p>最近布置了 y86-64 的 PJ，学习了 CPU 的顺序以及流水线设计模式，开始做PJ。</p>
-<h5 id="PJ进展"><a href="#PJ进展" class="headerlink" title="PJ进展:"></a>PJ进展:</h5><h6 id="设计模式-C-with-Class"><a href="#设计模式-C-with-Class" class="headerlink" title="设计模式 - C with Class"></a>设计模式 - C with Class</h6><p>在面向过程的 Fetch -&gt; Decode -&gt; Execute -&gt; Memory -&gt; WriteBack 基础上套instr的类壳</p>
-<h6 id="后端进度"><a href="#后端进度" class="headerlink" title="后端进度"></a>后端进度</h6><ol>
+<h3 id="计算机系统-ICS"><a href="#计算机系统-ICS" class="headerlink" title="计算机系统 - ICS"></a>计算机系统 - ICS</h3><p>最近布置了 y86-64 的 PJ，学习了 CPU 的顺序以及流水线设计模式，开始做PJ。</p>
+<h4 id="PJ进展"><a href="#PJ进展" class="headerlink" title="PJ进展:"></a>PJ进展:</h4><h5 id="设计模式-C-with-Class"><a href="#设计模式-C-with-Class" class="headerlink" title="设计模式 - C with Class"></a>设计模式 - C with Class</h5><p>在面向过程的 Fetch -&gt; Decode -&gt; Execute -&gt; Memory -&gt; WriteBack 基础上套instr的类壳</p>
+<h5 id="后端进度"><a href="#后端进度" class="headerlink" title="后端进度"></a>后端进度</h5><ol>
 <li>完成了Prototype设计<ul>
 <li>目前 CC 的 OF 有一点 BUG</li>
 </ul>
@@ -391,7 +391,7 @@ edge e[Max];
 </ol>
 </li>
 </ul>
-<h6 id="前端进度"><a href="#前端进度" class="headerlink" title="前端进度"></a>前端进度</h6><p>TODO中，思考如何设计</p>
+<h5 id="前端进度"><a href="#前端进度" class="headerlink" title="前端进度"></a>前端进度</h5><p>TODO中，思考如何设计</p>
 <ul>
 <li>可选方案:<ol>
 <li>Python 作为中间件用 jinja 模板替换</li>
@@ -401,14 +401,14 @@ edge e[Max];
 </li>
 </ul>
 <hr>
-<h4 id="科研进度-CNN"><a href="#科研进度-CNN" class="headerlink" title="科研进度 - CNN"></a>科研进度 - CNN</h4><h5 id="目前方向"><a href="#目前方向" class="headerlink" title="目前方向"></a>目前方向</h5><p>3D Instance Segmentation</p>
-<h5 id="论文收集"><a href="#论文收集" class="headerlink" title="论文收集"></a>论文收集</h5><ol>
+<h3 id="科研进度-CNN"><a href="#科研进度-CNN" class="headerlink" title="科研进度 - CNN"></a>科研进度 - CNN</h3><h4 id="目前方向"><a href="#目前方向" class="headerlink" title="目前方向"></a>目前方向</h4><p>3D Instance Segmentation</p>
+<h4 id="论文收集"><a href="#论文收集" class="headerlink" title="论文收集"></a>论文收集</h4><ol>
 <li>(RDCNet)mini ResNet in 2d Instance Seg</li>
 <li>Attention Based 3d instance segmentation</li>
 <li>Learning Gaussian Instance Segmentation in Point Clouds</li>
 <li>3D Sementic &amp; Instance Segmentation via Salient Point Clustering Optimization</li>
 </ol>
-<h5 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h5><ol>
+<h4 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h4><ol>
 <li>实现 ResNet Backbone</li>
 <li>复现 Fast R-CNN &amp; Mask R-CNN</li>
 </ol>
