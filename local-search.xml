@@ -4,11 +4,36 @@
   
   
   <entry>
+    <title>PointNet++论文阅读</title>
+    <link href="/CsBlog/2020/12/08/PointNetpp/"/>
+    <url>/CsBlog/2020/12/08/PointNetpp/</url>
+    
+    <content type="html"><![CDATA[<h1 id="PointNet"><a href="#PointNet" class="headerlink" title="PointNet++"></a>PointNet++</h1><h2 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h2><p>回顾一下 PointNet ，我们说PointNet解决了 PointCloud 输入的顺序无关问题，但其有一个缺点就是无法获取局部特征，即没有很好的处理 local information，使其在复杂场景下表现乏力。PointNet++正是针对PointNet这一弱点进行改进。</p><ul><li>主要改进方式</li></ul><ol><li><p>受到 CNN 神经元感受野不断扩大的启发，利用空间距离，使 PointNet对点集局部区域进行特征迭代提取。</p></li><li><p>使用最远点提取方式，能够实现较为均匀的点采样</p></li></ol><h2 id="关键问题"><a href="#关键问题" class="headerlink" title="关键问题"></a>关键问题</h2><p>一、如何做点集划分 (怎么划分空间)</p><p>二、如何利用特征提取器提取局部特征信息 (怎么提取特征)</p><p>这两个问题是相关的，如果和 CNN 做一个类比，在CNN中卷积核是基本的特征提取器，每个卷积核对应一个 n*n 的像素区域，在PointCloud中同样要找到结构相同的子区域和对应的特征提取器。</p><p>那么在 PointNet++ 中作者使用欧式空间中的邻接球作为子区域做点集的 Partition 使用 PointNet 作为特征提取器。</p><h2 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h2><p><img src="https://pic1.zhimg.com/80/v2-f3f9a70d0052be1949a18c6e556572b8_1440w.jpg" alt></p><p>主要包括三部分</p><h3 id="Sample-layer"><a href="#Sample-layer" class="headerlink" title="Sample layer"></a>Sample layer</h3><p>主要对输入点进行采样，使用最远点采样法，选择$N$个点，能够更均匀的覆盖整个点集。<br><img src="https://img-blog.csdnimg.cn/20200923132734170.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1FUVkxD,size_16,color_FFFFFF,t_70#pic_center" alt></p><h3 id="Grouping-layer"><a href="#Grouping-layer" class="headerlink" title="Grouping layer"></a>Grouping layer</h3><p>确定点的局部划分，即确定邻接球的半径和内部的点的数量。<br>一种是 ball query 看半径，还有就是用 KNN 看内部点的数量</p><h3 id="PointNet-layer"><a href="#PointNet-layer" class="headerlink" title="PointNet layer"></a>PointNet layer</h3><p>通过 PointNet 进行特征提取，假设每个 Group 中有 $n$ 个点，那么通过 PointNet 将 $n\times 3$ 的矩阵转换成 $n\times K$ 的矩阵。迭代进行操作，感受野逐渐扩大，维数逐渐提升。</p><h2 id="不均匀点云数据"><a href="#不均匀点云数据" class="headerlink" title="不均匀点云数据"></a>不均匀点云数据</h2><p>我们知道点云数据不像图片中的信息是紧密连接的，空间中的点有稀疏和稠密之分。这时候如果平均采样那么会在空间中点稀疏的地方造成浪费，在点密集的地方却不足以提取到足够的信息。为此 PointNet++ 作者提出了两种方式来保证更加优化的特征提取。</p><p><img src="https://pic1.zhimg.com/80/v2-5389688194b56daf0311e926360f8e6c_1440w.jpg" alt></p><h3 id="多尺度组合-multi-scale-grouping-MSG"><a href="#多尺度组合-multi-scale-grouping-MSG" class="headerlink" title="多尺度组合 (multi-scale grouping, MSG)"></a>多尺度组合 (multi-scale grouping, MSG)</h3><p>对于同一个点多次采用不同的Grouping，过PointNet之后将特征 concat，增加了很多计算量，耗时。</p><h3 id="多分辨率组合（multi-resolution-grouping-MRG）"><a href="#多分辨率组合（multi-resolution-grouping-MRG）" class="headerlink" title="多分辨率组合（multi-resolution grouping, MRG）"></a>多分辨率组合（multi-resolution grouping, MRG）</h3><p>相当于多层之间采用了不同的分辨率，先用小的grouping通过两层正常提取出的特征，和一次大的grouping提取出的特征进行一个concat，组合了两种分辨率的信息。</p><hr><h2 id="实验效果"><a href="#实验效果" class="headerlink" title="实验效果"></a>实验效果</h2><p><img src="/CsBlog/CsBlog/2020/12/08/PointNetpp/img/PointNet++/res.png" alt></p><p>从实验效果上我们可以看出其准确率明显好于单一的PointNet，并且在使用了 MSG 和 MRG 后对于大量点集的鲁棒性明显提升了。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Research</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>PointNet</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>素数筛法 (2020-12-7)</title>
     <link href="/CsBlog/2020/12/07/DataStructureNote2/"/>
     <url>/CsBlog/2020/12/07/DataStructureNote2/</url>
     
-    <content type="html"><![CDATA[<h1 id="素数筛法"><a href="#素数筛法" class="headerlink" title="素数筛法"></a>素数筛法</h1><p>我们今天来讲讲筛法，今天上机出其不意的考了一手筛法，我居然天真的在写暴力素数判断。所以今天就来复习(重学)一下筛法。</p><p>如果我们想要判断一个数是否是素数有什么方法呢？ 暴力判断肯定是最容易想到的方法，按定义素数不能被1和其自身以外的数整除，我们自然会想到从 x - 1到2全判一遍的算法。但显然，我们做了很多重复的工作。</p><p>实际上我们可以发现，如果我们判断出了一个素数，那么它的倍数显然就不可能是素数，这样就可以直接将其开除“素籍“，踢出待选区域。这种筛选素数的方法就像一个筛子，每碰到一个素数就筛掉一批非素数，大大降低了复杂度。</p><p><img src="https://images2015.cnblogs.com/blog/927750/201612/927750-20161229220529101-1487746442.png" alt></p><h2 id="埃拉托斯特尼筛法"><a href="#埃拉托斯特尼筛法" class="headerlink" title="埃拉托斯特尼筛法"></a>埃拉托斯特尼筛法</h2><p>按上述思想写出代码，就是埃氏筛法。</p><ul><li>代码实现</li></ul><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">Eratosthenes</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>&#123;<span class="hljs-keyword">int</span> p = <span class="hljs-number">0</span>;<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt;= n; ++i)     is_prime[i] = <span class="hljs-number">1</span>;is_prime[<span class="hljs-number">0</span>] = is_prime[<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>;<span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; ++i) &#123;    <span class="hljs-keyword">if</span> (is_prime[i]) <span class="hljs-comment">// 直接从2开筛不会放进来一个非素数</span>    &#123;        prime[p++] = i;         <span class="hljs-keyword">if</span> ((<span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span>)i * i &lt;= n)            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = i * i; j &lt;= n; j += i)                <span class="hljs-comment">// 因为从 2 到 i - 1 的倍数我们之前筛过了，这里直接从 i 的 i倍开始，提高了运行速度</span>                is_prime[j] = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 是i的倍数的均不是素数</span>    &#125;&#125;<span class="hljs-keyword">return</span> p;&#125;</code></pre><h3 id="复杂度计算"><a href="#复杂度计算" class="headerlink" title="复杂度计算"></a>复杂度计算</h3><p>关于埃氏筛法的复杂度计算，我们来做一个推导，首先我们可以看出每次循环中，若当前素数是p，那么单次循环执行 n/p 次， 所以总的表达式就是 n 乘上所有素数的倒数和 $n\sum_{p} \frac{1}{p}$</p><p>关于所有素数的倒数和，在欧拉相关的论文中有明确的估计。</p><script type="math/tex; mode=display">\sum_{p\le x} \frac{1}{p} = \ln\ln(x) + \gamma + \sum_{m = 2}^{\infty}{\mu (m){\frac{\zeta(m)}{m} + \delta}}</script><p>论文链接 [<a href="https://arxiv.org/pdf/math/0504289.pdf">https://arxiv.org/pdf/math/0504289.pdf</a>]</p><p>可知埃氏筛法的复杂度为 $O(nloglogn)$</p><hr><h2 id="欧拉筛法-（线性筛）"><a href="#欧拉筛法-（线性筛）" class="headerlink" title="欧拉筛法 （线性筛）"></a>欧拉筛法 （线性筛）</h2><p>TODO</p>]]></content>
+    <content type="html"><![CDATA[<h1 id="素数筛法"><a href="#素数筛法" class="headerlink" title="素数筛法"></a>素数筛法</h1><p>我们今天来讲讲筛法，今天上机出其不意的考了一手筛法，我居然天真的在写暴力素数判断。所以今天就来复习(重学)一下筛法。</p><p>如果我们想要判断一个数是否是素数有什么方法呢？ 暴力判断肯定是最容易想到的方法，按定义素数不能被1和其自身以外的数整除，我们自然会想到从 x - 1到2全判一遍的算法。但显然，我们做了很多重复的工作。</p><p>实际上我们可以发现，如果我们判断出了一个素数，那么它的倍数显然就不可能是素数，这样就可以直接将其开除“素籍“，踢出待选区域。这种筛选素数的方法就像一个筛子，每碰到一个素数就筛掉一批非素数，大大降低了复杂度。</p><p><img src="https://images2015.cnblogs.com/blog/927750/201612/927750-20161229220529101-1487746442.png" alt></p><h2 id="埃拉托斯特尼筛法"><a href="#埃拉托斯特尼筛法" class="headerlink" title="埃拉托斯特尼筛法"></a>埃拉托斯特尼筛法</h2><p>按上述思想写出代码，就是埃氏筛法。</p><ul><li>代码实现</li></ul><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">Eratosthenes</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>&#123;    <span class="hljs-keyword">int</span> p = <span class="hljs-number">0</span>;    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt;= n; ++i)         is_prime[i] = <span class="hljs-number">1</span>;    is_prime[<span class="hljs-number">0</span>] = is_prime[<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>;    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; ++i)     &#123;        <span class="hljs-keyword">if</span> (is_prime[i]) <span class="hljs-comment">// 直接从2开筛不会放进来一个非素数</span>        &#123;            prime[p++] = i;             <span class="hljs-keyword">if</span> ((<span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span>)i * i &lt;= n)                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = i * i; j &lt;= n; j += i)                    <span class="hljs-comment">// 因为从 2 到 i - 1 的倍数我们之前筛过了，这里直接从 i 的 i倍开始，提高了运行速度</span>                    is_prime[j] = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 是i的倍数的均不是素数</span>        &#125;    &#125;    <span class="hljs-keyword">return</span> p;&#125;</code></pre><h3 id="复杂度计算"><a href="#复杂度计算" class="headerlink" title="复杂度计算"></a>复杂度计算</h3><p>关于埃氏筛法的复杂度计算，我们来做一个推导，首先我们可以看出每次循环中，若当前素数是p，那么单次循环执行 n/p 次， 所以总的表达式就是 n 乘上所有素数的倒数和 $n\sum_{p} \frac{1}{p}$</p><p>关于所有素数的倒数和，在欧拉相关的论文中有明确的估计。</p><script type="math/tex; mode=display">\sum_{p\le x} \frac{1}{p} = \ln\ln(x) + \gamma + \sum_{m = 2}^{\infty}{\mu (m){\frac{\zeta(m)}{m} + \delta}}</script><p>论文链接 [<a href="https://arxiv.org/pdf/math/0504289.pdf">https://arxiv.org/pdf/math/0504289.pdf</a>]</p><p>可知埃氏筛法的复杂度为 $O(nloglogn)$</p><hr><h2 id="欧拉筛法-（线性筛）"><a href="#欧拉筛法-（线性筛）" class="headerlink" title="欧拉筛法 （线性筛）"></a>欧拉筛法 （线性筛）</h2><p>TODO</p>]]></content>
     
     
     <categories>
@@ -19,6 +44,8 @@
     
     
     <tags>
+      
+      <tag>Number theory</tag>
       
       <tag>Multiplication algorithm</tag>
       
@@ -97,7 +124,7 @@
     
     <tags>
       
-      <tag>2020-11-15 ~ 2020-11-27</tag>
+      <tag>Summary</tag>
       
     </tags>
     
