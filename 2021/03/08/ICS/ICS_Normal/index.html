@@ -184,7 +184,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      377 字
+      378 字
     </span>
   
 
@@ -227,21 +227,24 @@
             <h1 style="display: none">排序算法及编译器优化效果对比</h1>
             
             <div class="markdown-body">
-              <p><em>ICS (Normal) 第一周作业</em></p>
-<h3 id="冒泡与快排用时对比"><a href="#冒泡与快排用时对比" class="headerlink" title="冒泡与快排用时对比"></a>冒泡与快排用时对比</h3><p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gocut0coevj31do0sggpl.jpg" srcset="/CsBlog/img/loading.gif" alt="冒泡排序"></p>
+              <h2 id="ICS-Normal-第一周作业"><a href="#ICS-Normal-第一周作业" class="headerlink" title="ICS (Normal) 第一周作业"></a><em>ICS (Normal) 第一周作业</em></h2><h3 id="冒泡与快排用时对比"><a href="#冒泡与快排用时对比" class="headerlink" title="冒泡与快排用时对比"></a>冒泡与快排用时对比</h3><p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gocut0coevj31do0sggpl.jpg" srcset="/CsBlog/img/loading.gif" alt="冒泡排序"></p>
 <h3 id="相同算法在-GCC-编译优化下用时对比"><a href="#相同算法在-GCC-编译优化下用时对比" class="headerlink" title="相同算法在 GCC 编译优化下用时对比"></a>相同算法在 GCC 编译优化下用时对比</h3><p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gocusyz2qfj31do0sggpl.jpg" srcset="/CsBlog/img/loading.gif" alt="冒泡排序"></p>
 <p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gocut5qwjwj31a80smjvj.jpg" srcset="/CsBlog/img/loading.gif" alt="快速排序"></p>
 <p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gocutaoylej31b40sqtcm.jpg" srcset="/CsBlog/img/loading.gif" alt="优化快速排序"></p>
 <h3 id="不同排序算法在不同GCC优化下的变化"><a href="#不同排序算法在不同GCC优化下的变化" class="headerlink" title="不同排序算法在不同GCC优化下的变化"></a>不同排序算法在不同GCC优化下的变化</h3><p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gocutf9rb3j31cs0s8dih.jpg" srcset="/CsBlog/img/loading.gif" alt="冒泡排序"></p>
 <p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gocuthxygzj31b20t4jtt.jpg" srcset="/CsBlog/img/loading.gif" alt="快速排序"></p>
 <p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gocutkvifhj31b20swdi8.jpg" srcset="/CsBlog/img/loading.gif" alt="优化快速排序"></p>
-<p>-—</p>
+<hr>
 <h3 id="改进快速排序"><a href="#改进快速排序" class="headerlink" title="改进快速排序"></a>改进快速排序</h3><p>对于快速排序的改进策略一般有两种</p>
-<p>- <strong><em>Pivot 三值取中</em></strong></p>
+<ul>
+<li><strong><em>Pivot 三值取中</em></strong></li>
+</ul>
 <p>快速排序最坏情况是枢纽元为最大或者最小数字，那么所有数都划分到一个序列去了时间复杂度为O(n^2)，为了保证最坏情况不出现，尽量使pivot能够二分序列，我们采用三值取中法，既开头、中间、结尾三个元素选取大小中等的元素与首元交换成为Pivot，避免最坏情况出现。</p>
-<p>效果：在应用三值取中后可以发现优化快排的排序速度变得较为稳定，不像普通版本一样依赖于序列的形态。</p>
-<p>- <strong><em>小规模插入排序</em></strong></p>
-<p>即当快速排序所划分的子序列的长度小于某个定值k时，该子序列基本有序，可以采用插入排序的办法对子序列进行排序，从而使整体算法的时间复杂度的期望下降为 O(nk+nlg(n/k))</p>
+<p><strong>效果：</strong>在应用三值取中后可以发现优化快排的排序速度变得较为稳定，不像普通版本一样依赖于序列的形态。</p>
+<ul>
+<li><strong><em>小规模插入排序</em></strong></li>
+</ul>
+<p>即当快速排序所划分的子序列的长度小于某个定值k时，该子序列基本有序，可以采用插入排序的办法对子序列进行排序，从而使整体算法的时间复杂度的期望下降为 $O(nk+nlg(\frac{n}{k}))$</p>
 <h3 id="实验效果"><a href="#实验效果" class="headerlink" title="实验效果"></a>实验效果</h3><p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gocuto6qwgj317w0t076c.jpg" srcset="/CsBlog/img/loading.gif" alt></p>
 <p>可以看到在同等数据量下，对于快速排序具有一定优化效果</p>
 <p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gocutsrs9ij31au0sctcp.jpg" srcset="/CsBlog/img/loading.gif" alt></p>
