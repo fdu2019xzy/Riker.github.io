@@ -6,7 +6,7 @@
     &#123;
         <span class="hljs-keyword">if</span>(v == fa)
             <span class="hljs-keyword">continue</span>;
-        dfs(v, u);
+        <span class="hljs-built_in">dfs</span>(v, u);
     &#125;
 &#125;
 
@@ -23,7 +23,7 @@
 <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">lca</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y)</span></span>
 <span class="hljs-function"></span>&#123;
     <span class="hljs-keyword">if</span>(dep[x] &lt; dep[y])
-        swap(x, y); <span class="hljs-comment">// 让深度大的为x</span>
+        <span class="hljs-built_in">swap</span>(x, y); <span class="hljs-comment">// 让深度大的为x</span>
     <span class="hljs-keyword">if</span>(dep[x] != dep[y])
     &#123;
         <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> k = <span class="hljs-number">31</span>; k &gt;= <span class="hljs-number">0</span>; --k)
@@ -69,7 +69,7 @@
 
     <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> k = <span class="hljs-number">1</span>; k &lt; lgn; ++k)
         <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i + (<span class="hljs-number">1</span> &lt;&lt; (k - <span class="hljs-number">1</span>)) &lt;= n; ++i)
-            f[i][k] = max(f[i][k - <span class="hljs-number">1</span>], f[i + (<span class="hljs-number">1</span> &lt;&lt; (k - <span class="hljs-number">1</span>))][k - <span class="hljs-number">1</span>]);
+            f[i][k] = <span class="hljs-built_in">max</span>(f[i][k - <span class="hljs-number">1</span>], f[i + (<span class="hljs-number">1</span> &lt;&lt; (k - <span class="hljs-number">1</span>))][k - <span class="hljs-number">1</span>]);
 &#125;
 
 <span class="hljs-comment">// 查询操作：</span>
@@ -84,7 +84,7 @@
 <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> l, <span class="hljs-keyword">int</span> r)</span></span>
 <span class="hljs-function"></span>&#123;
     <span class="hljs-keyword">int</span> k = Logn[r - l + <span class="hljs-number">1</span>];
-    <span class="hljs-keyword">return</span> max(f[i][k], f[r - (<span class="hljs-number">1</span> &lt;&lt; k) + <span class="hljs-number">1</span>][k]); <span class="hljs-comment">// O(1) 查询</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(f[i][k], f[r - (<span class="hljs-number">1</span> &lt;&lt; k) + <span class="hljs-number">1</span>][k]); <span class="hljs-comment">// O(1) 查询</span>
 &#125;
 </code></pre><p>这样一个ST表就写好了，回到正题，我们是通过欧拉序把 LCA问题转换为RMQ问题，我们现在来看这是如何进行的。</p><p>在看欧拉序之前我们先看一看基本的 dfs 序是怎么做的（真就递归学习呗）</p><p><img src="https://img-blog.csdnimg.cn/20191008210415266.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3djeHlreQ==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="dfs序"></p><p>正常的dfs序是深度优先不记录回溯的，如上图 dfs 序就是<br><strong>A-&gt;B-&gt;D-&gt;E-&gt;G-&gt;C-&gt;F-&gt;H</strong><br>每个节点在dfs序中出现且仅出现一次</p><p>而我们再来看欧拉序</p><p><img src="https://img-blog.csdnimg.cn/20191008210445328.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3djeHlreQ==,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" alt="欧拉序"></p><p>它不同于dfs序将栈pop的元素也加入队列中，从而就形成了上图“逆时针”的模式<br>上图欧拉序就是<br><strong>A-&gt;B-&gt;D-&gt;B-&gt;E-&gt;G-&gt;E-&gt;B-&gt;A-&gt;C-&gt;F-&gt;H-&gt;F-&gt;C-&gt;A</strong><br>一种intuition就是欧拉序是一种正常人走路遍历所有节点的顺序，只要叶节点大于2个的树就不可能是欧拉图或半欧拉图，那么必然要走回头路，在dfs序的基础上将回头路线画出就是欧拉序。</p><p>我们来观察欧拉序可以发现，其首尾必然是根节点，然后除了叶节点仅出现一次，其余点出现2次以上(取决于是几叉树)，如果我们默认是二叉树，那么欧拉序的大小就不会超过 2n - 1 (考虑单链或就两叉到底的最坏情况)</p><p>如果我们在欧拉序节点旁配上它的深度再结合图来观察<br><strong>A(0)-&gt;B(1)-&gt;D(2)-&gt;B(1)-&gt;E(2)-&gt;G(3)-&gt;E(2)-&gt;B(1)-&gt;A(0)-&gt;C(1)-&gt;F(2)-&gt;H(3)-&gt;F(2)-&gt;C(1)-&gt;A(0)</strong><br>我们根据欧拉序的性质不难发现一个节点的左右子树必然夹在其在欧拉序中第二次出现的位置的左右两边，例如 B 的 左右子树 D, E 出现在B第二次出现位置[3]的两边[2]、[4]。<br>那么我们想如果我们找，两个节点的 LCA 就直接找两个节点第一次出现的位置，将其作为区间左右，在中间找深度最小的点就行了，这样找到的一定就是他们的LCA (不可能找到更浅的祖先) 。 当然其中包含了左边一个节点的子树，但为了方便我们就统一取第一次出现的位置即可。</p><p>这样我们就在线性的时间内将LCA问题转化成了RMQ问题，然后通过之前O(nlgn)的预处理我们可以做到 O(1)的询问，这样LCA问题的总复杂度就是ST表预处理的 O(nlogn) 的复杂度。</p><p>似乎总体没有比倍增更优，但单次询问比倍增快了很多，适合需要及时快速反馈的应用场景。</p><ul><li>代码实现</li></ul><pre><code class="hljs cpp"><span class="hljs-comment">// get eula array</span>
 <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span> u, <span class="hljs-keyword">int</span> fa, <span class="hljs-keyword">int</span> level)</span></span>
@@ -101,7 +101,7 @@
         pos[v] = cnt_2;
         find_u[cnt_2++] = v;
         dep[v] = level + <span class="hljs-number">1</span>;
-        dfs(v, u, level + <span class="hljs-number">1</span>);
+        <span class="hljs-built_in">dfs</span>(v, u, level + <span class="hljs-number">1</span>);
     &#125;
 &#125;
 
@@ -126,23 +126,23 @@
     <span class="hljs-keyword">int</span> l = pos[u], r = pos[v];
     <span class="hljs-keyword">int</span> j = Logn[r - l + <span class="hljs-number">1</span>];
     <span class="hljs-comment">// 直接找区间最小深度的节点</span>
-    <span class="hljs-keyword">int</span> ans = min(f[l][j], f[r - (<span class="hljs-number">1</span> &lt;&lt; j) + <span class="hljs-number">1</span>][j]);
+    <span class="hljs-keyword">int</span> ans = <span class="hljs-built_in">min</span>(f[l][j], f[r - (<span class="hljs-number">1</span> &lt;&lt; j) + <span class="hljs-number">1</span>][j]);
     <span class="hljs-keyword">return</span> pos[ans];    <span class="hljs-comment">// 返回节点位置...</span>
 &#125;</code></pre><hr><h2 id="并查集"><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h2><p>再来讲讲这周学的并查集</p><p>并查集顾名思义支持且仅支持两种操作</p><ol><li>合并两个集合</li><li>查询元素所在的集合</li></ol><p>并查集是一种树上的操作，通过根节点直接代表整棵树，初始化的时候根节点父节点为自身。</p><ul><li>合并操作</li></ul><p>合并操作相对比较简单，由于我们通过根节点来代表这个集合，那么合并两个集合只需要将其中一个的根节点作为另一个的子节点连接上即可。但同时我们要注意整棵树的深度会影响我们的时间复杂度，因而我们要尽可能不加深或是少加深树的深度，所以我们采用将深度较小的树连接到深度较大的树上，每次这样操作，树深度每次至多 +1，这种策略称之为<strong>按秩合并（启发式合并）</strong></p><p><img src="https://oi-wiki.org/ds/images/dsu1.png" srcset="/img/loading.gif" alt></p><ul><li>代码</li></ul><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">unionSet</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y)</span></span>
 <span class="hljs-function"></span>&#123;
-    <span class="hljs-keyword">int</span> tmp_x = find(x);
-    <span class="hljs-keyword">int</span> tmp_y = find(y);
+    <span class="hljs-keyword">int</span> tmp_x = <span class="hljs-built_in">find</span>(x);
+    <span class="hljs-keyword">int</span> tmp_y = <span class="hljs-built_in">find</span>(y);
     <span class="hljs-keyword">if</span>(tmp_x == tmp_y)  <span class="hljs-comment">// 本来就在同一集合中</span>
         <span class="hljs-keyword">return</span>; 
     <span class="hljs-keyword">if</span>(sz[tmp_x] &gt; sz[tmp_y])
-        swap(tmp_x, tmp_y); <span class="hljs-comment">// 让 tmp_x 是深度小的集合</span>
+        <span class="hljs-built_in">swap</span>(tmp_x, tmp_y); <span class="hljs-comment">// 让 tmp_x 是深度小的集合</span>
     fa[tmp_x] = tmp_y; <span class="hljs-comment">// 将 tmp_x 连接到 tmp_y 上</span>
 &#125;</code></pre><ul><li>查询操作</li></ul><p>我们来讲并查集关键的查询操作，并查集的查询操作给出一个节点，我们查询其父节点，如若其父节点不是自身就继续向上查询，直到查询到根节点（父节点为自身）返回根节点作为这个集合的代表。</p><p>我们不难看出这样的查询操作单次是 $O(n)$ 的，原因是我们每次查询都要走完完整的一条链，但是其实我们并不关心该节点的父节点是谁，我们只想知道其根节点是什么。所以我们可以直接让它的父节点直接是根节点，这样虽然在第一次操作的时候，我们还是要走完一条链，但之后该节点的父节点直接就是根节点。这种操作称为<strong>路径压缩</strong></p><p><img src="https://oi-wiki.org/ds/images/dsu2.png" srcset="/img/loading.gif" alt></p><pre><code class="hljs cpp">
 <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x)</span></span>
 <span class="hljs-function"></span>&#123;
     <span class="hljs-keyword">if</span>(fa[x] == x)
         <span class="hljs-keyword">return</span> x;
-    <span class="hljs-keyword">return</span> fa[x] = find(fa[x]); <span class="hljs-comment">// 路径压缩</span>
+    <span class="hljs-keyword">return</span> fa[x] = <span class="hljs-built_in">find</span>(fa[x]); <span class="hljs-comment">// 路径压缩</span>
 &#125;</code></pre><ul><li><strong>复杂度分析</strong></li></ul><p>我们现在来分析一下复杂度，朴素算法毫无疑问单次操作是 $O(mn)$ 的<br>如果我们使用了路径压缩，在Tarjan大神的论文[1] 中给出了复杂度的证明，只使用路径压缩不使用按秩合并的最坏时间复杂度是 $O(mlogn)$ 已经满足大部分题的需求，所以一般只需要路径压缩就能过题。<br>在姚期智的论文 [2] 中，证明了只路径压缩的平均复杂度为 $O(m\alpha{(m,n)})$<br><em>注： $\alpha$ 是阿克曼函数的反函数，其增长极其缓慢，也就是说其单次操作的平均运行时间可以认为是一个很小的常数。</em></p><p>如果我们同时使用了路径压缩和按秩合并，那么我们可以做到 $O(m\alpha{(m,n)})$ 的最坏时间复杂度。相当于单次询问是常数级别复杂度。</p><p>Ackermann 函数</p><script type="math/tex;mode=display">A(m,n) =\left\{
 \begin{array}{l}
     n + 1, \; m = 0 \\
@@ -157,7 +157,7 @@
         <span class="hljs-keyword">int</span> v = e[i].v;
         <span class="hljs-keyword">if</span>(v != fa)
         &#123;
-            getAns(v, u);
+            <span class="hljs-built_in">getAns</span>(v, u);
             c[u] += c[v] <span class="hljs-comment">// 收集子树权值更新c为原本数组</span>
             <span class="hljs-comment">// 更新后的c就代表其和其父节点连接边的边权</span>
         &#125;

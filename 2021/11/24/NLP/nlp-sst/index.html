@@ -3,7 +3,7 @@
         x = self.embed_dropout(self.embeddings(x))
         out, _ = self.rnn(x)
         out = out.view(batch_size, seq_len, self.num_labels, self.hidden_size)
-        out = torch.cat([out[:, <span class="hljs-number">-1</span>, <span class="hljs-number">0</span>, :], out[:, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, :]], dim=<span class="hljs-number">-1</span>)
+        out = torch.cat([out[:, -<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, :], out[:, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, :]], dim=-<span class="hljs-number">1</span>)
         out = self.dropout(out)
         logits = self.fc(out)
         <span class="hljs-keyword">return</span> logits</code></pre><ul><li><strong>模型参数及超参数</strong></li></ul><pre><code class="hljs yaml"><span class="hljs-attr">embed_dim:</span> <span class="hljs-number">300</span> 	<span class="hljs-comment"># 嵌入维度</span>
@@ -40,11 +40,11 @@ F_1 = \frac{2*Precision*Recall}{Precision + Recall}</script><p><img src="https:/
   <span class="hljs-attr">NAME:</span> <span class="hljs-string">Word2Vec</span> <span class="hljs-comment"># Word2Vec, GloVe, None</span>
   <span class="hljs-attr">PATH:</span> <span class="hljs-string">Gensim/GoogleNews-vectors-negative300.bin</span></code></pre><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">load_word2vec</span>(<span class="hljs-params">text_field, PATH</span>):</span>
     word_to_idx = text_field.vocab.stoi
-    pretrained_embeddings = np.random.uniform(<span class="hljs-number">-0.25</span>, <span class="hljs-number">0.25</span>, (<span class="hljs-built_in">len</span>(text_field.vocab), <span class="hljs-number">300</span>))
+    pretrained_embeddings = np.random.uniform(-<span class="hljs-number">0.25</span>, <span class="hljs-number">0.25</span>, (<span class="hljs-built_in">len</span>(text_field.vocab), <span class="hljs-number">300</span>))
     pretrained_embeddings[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>
     word2vec = load_bin_vec(PATH, word_to_idx)
     <span class="hljs-keyword">for</span> word, vector <span class="hljs-keyword">in</span> word2vec.items():
-        pretrained_embeddings[word_to_idx[word]<span class="hljs-number">-1</span>] = vector
+        pretrained_embeddings[word_to_idx[word]-<span class="hljs-number">1</span>] = vector
 
     <span class="hljs-keyword">return</span> pretrained_embeddings</code></pre><p>​ 使用预训练的参数替换模型中的 embeddings 层的初始值，其余训练参数和超参均同上，进行公平对比。</p><p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gwdr76zpusj30sq0dkaau.jpg" srcset="/img/loading.gif" style="zoom:60%"></p><p>可以看到，预训练的词嵌入非常好的指导网络在情感分类任务上的训练拟合，拟合速度和准确率相比随机初始化的参数都有较大幅度的提升，仅在第7个epoch就得到了最好性能。</p><div style="page-break-after:always"></div><div class="table-container"><table><thead><tr><th style="text-align:center">模型</th><th style="text-align:center">准确率 / %</th><th style="text-align:center">Epoch / n</th></tr></thead><tbody><tr><td style="text-align:center">LSTM-Random</td><td style="text-align:center">72.84</td><td style="text-align:center">13</td></tr><tr><td style="text-align:center">LSTM-Word2Vec</td><td style="text-align:center">75.11</td><td style="text-align:center">7</td></tr></tbody></table></div><h4 id="2-3-2-GloVe"><a href="#2-3-2-GloVe" class="headerlink" title="2.3.2 GloVe"></a>2.3.2 GloVe</h4><p>​ 我们换上比Word2Vec更加具有全局信息的GloVe嵌入，这里采用的是 <code>glove.840B.300d</code></p><pre><code class="hljs yaml"><span class="hljs-attr">WORD_EMBEDDING:</span> 
   <span class="hljs-attr">NAME:</span> <span class="hljs-string">GloVe</span> <span class="hljs-comment"># Word2Vec, GloVe, None</span>
